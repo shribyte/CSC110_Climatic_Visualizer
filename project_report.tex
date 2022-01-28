@@ -1,0 +1,198 @@
+\documentclass[fontsize=11pt]{article}
+\usepackage{amsmath}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+
+\title{CSC110 Project Report: Climate Change and its Affects on Human Health}
+\author{Shridhar Shatrughan, Aamishi Avarsekar}
+\date{December 14, 2020}
+
+\begin{document}
+    \maketitle
+
+    \section*{Research Motivations}
+
+    \begin{itemize}
+
+        \item \large Today, worldwide, there is an apparent increase in many infectious diseases, including some newly-circulating ones (HIV/AIDS, hantavirus, hepatitis C, SARS, etc.). This reflects the combined impacts of rapid demographic, environmental, social, technological and other changes in our ways- of-living.[1]
+
+        \item Vectors, pathogens and hosts each survive and reproduce within a range of optimal climatic conditions. As a result, it is necessary to study the mathematical nature of how climatic conditions may affect disease spread. For eg: vector survival and reproduction, the vector's biting rate, as well as its incubation rate, may be positively affect as temperatures and humidity levels increase in a geographic area.[2]
+
+        \item There is historical evidence seen for associations between climate change and infection spread. For eg: Malaria is known to be one of the vector-borne diseases very prone to long-term climate change. This association between malaria and climate change has long been studied in India. Early last century, the river-irrigated Punjab region
+        experienced periodic malaria
+        epidemics. Excessive monsoon
+        rainfall and high humidity were identified as major influences, enhancing mosquito breeding and survival. [3]
+
+        \item As different studies have found out [4], a very minor rise in temperature may lead to a major increase in female mosquito maturity, which leads to a rise in malarial cases. For eg: In Western Kenya, a 0.5 C rise in temperatures since 1970 (consequence of climate change), led to an eight-fold increase in the number of malaria cases.[5]
+
+        \item We will explore how such a small increase in temperature (as well as other climatic variables), leads to an immense increase in the number of vector-borne diseases.
+
+        \item Development and survival rates of both the Anopheles mosquitoes and the Plasmodium parasites that cause malaria depend on temperature, making this a potential driver of mosquito population dynamics and malaria transmission. [6]
+
+        \item We will be running a simulation of how malarial caseloads may vary in the future, as climatic variables (mainly temperature) continue to vary. This will solidify our understanding of just how essential the climatic variability of a geographic location is, in determining the spread of disease (in this case, malaria).
+        \\\\NOTES:
+
+        [1] Climate change and human health - risks and responses, WHO  \\http://awareness.who.int/globalchange/summary/en/index5.html
+        \\(the next citations refer to the same article)
+
+        [2] Vector-borne and water-borne diseases, par. 3
+
+        [3] Historical evidence, par. 5
+
+        [4] Dr Andrew Karanja Githeko, Malaria and Climate Change (2009)
+
+        [5] Climate change and Malaria in Africa, par. 3
+
+        [6] The Effect of Temperature on Anopheles Mosquito Population Dynamics and the Potential for Malaria Transmission, Lindsay M. Beck-Johnson (2013)
+
+
+    \end{itemize}
+    \section*{Research Question}
+
+    \begin{itemize}
+        \large \item This analysis aims to \textbf {determine a pattern observed in the change in rate of infection-spread for a population, when factors such as temperature, precipitation levels, and humidity increase in a geographic area.} We also look at these results from an age-related perspective. As in, how this may affect different age groups in the population (perhaps one may be more affected than the other)
+
+        \large \item \textbf{We further go on to use the various scientific studies (as well as the evidence from the previous analysis) to generate mathematical models to estimate the future of malarial spread, assuming certain climate change scenarios.}
+
+
+    \end{itemize}
+    \section*{Dataset Description}
+
+    \begin{itemize}
+
+        \item The dataset mentioned here is used for our first analysis.
+        \item  The source of our data is a \textbf{survey conducted in Sylhet, Bangladesh.} Six infectious diseases were examined (based on clinical and laboratory diagostics).
+
+        \item These data have been downloaded from:
+
+        \textbf{\textit{https://figshare.com/articles/Climate\_change\_and\_Infectious\_diseases\_in\_Sylhet\_Bangladesh/6354956}}
+
+        \item The format of the dataset is an \textbf{xls file} (excel spreadsheet).
+
+        \item The dataset is a record of 6 infectious diseases (namely malaria, enteric fever, encephalitis, diarrheal disease, pneumonia and meningitis), years 2007 through 2011, observed in the residents of Sylhet, Bangladesh. It includes the name of the season when the disease was observed in the individual, as well as a list of average temperatures, humidity levels, and precipitation levels for the various months of that specific year.
+
+        \item We use all the columns present in this dataset for our first analysis.
+
+    \end{itemize}
+
+
+
+    \section*{Computational Plan, Part 1}
+
+    \begin{itemize}
+        \item \large In the data, we have records of specific cases, along with variable temperatures, precipitations levels, and humidity levels observed for that year. Since our aim is to find a relationship between these variables, and the number of cases recorded, we are going to use each variable separately, and generate line plots that can help visualize what's going on.
+
+        \item The way we do this is, first we analyze how the number of cases are increasing for different months in different years. We only compare months across different. years (instead of comparing different months, which is inaccurate since their will be temperature fluctuations for different months in a year).
+
+        \item Next, we visualize how the climatic variables for each month in a year (namely, temperatures, precipitation levels and humidity levels) change, and whether this is a reason for the change in the number of infectious disease cases.
+
+        \textbf{Functions and Computation:}
+
+        \item Firstly, the XLS file is converted to CSV. Using a helper function (read\_csvdata), we convert this CSV file to a List object, where each column of the data is a string element in the list. The read\_csvdata uses the csv module.
+
+        \item Next, we want to generate a dictionary that keeps count of the number of cases observed in each year, across different months. We use a function (create\_dictionary) which loops through the data (which is a list now, after passing through the read\_csvdata function), checks for each month and year, and accumulates different counts for each respective month and year.
+
+        \item For the graphical visualization of the changing number of cases through the months and years, we use the plotly.express library. We need a DataFrame object to plot, and this is generated using the pandas library. (using the function pandas.DataFrame)
+
+        \item For a DataFrame object, we want an explicit dictionary mentioning each column separately, we use a helper function (columns\_data\_creater) to do this. After creating the data frame, we use a visualize() function to plot this as a line. We use colors to show diifferent months through the years.
+
+        \item All the functions described above are stored in a file called total\_data\_visulizer.py
+        These files are imported for four more visualizations (which are optional, but can be run in main.py as well, after uncommenting their calls)
+        The three files that we use are visualizing the change in cases for the young population (18 and below), youth population (19 to 35), middle age (36 - 55) and elder populations. For each file, the create\_dictionary function is overidden (to add an additional if condition to restrict the age groups).
+
+        \item Now that we have a simple visualization of how the number of cases change throught the months and the years, we need to visualize how the climatic varables change.
+
+        \item We have this code in another file (climatic\_visualizer.py).
+        We have created three functions (visualize\_temperature, humidity and precipitation respectively), which use a wrangled version of our main data\_list from the previous analysis. These three functions plot the changes measured in the climatic variables, for each month in each subsequent year. The changes are very subtle, which explains how delicate climatic change may be, yet the devastating effects it has on infectious disease spread.
+
+    \end{itemize}
+
+
+    \section*{Computational Plan, Part 2}
+    \begin{itemize}
+        \item \large This section describes our computational plan regarding the simulation of malarial cases observed in a system, as climatic variables like temperature and the precipitation levels change.
+
+        \item For the development of the system, we have used certain assumptions, which are backed by scientific evidence, we will list some of them as they are used. Firstly, we are using days as the unit of time. In other words, the progression of time would be in days. This is done to simplify reasoning and understanding.
+
+        \item For each unit of time increase, we assume that the temperature increases randomly, depending on what the month is. Every month is assumed to be 30 days long.
+        The baseline\_temperatures for each month are set to be the average monthly temperatures in Sylhet, Bangladesh (just for a sense of continuity). Similarly, the baseline\_precipitation levels are assumed to be the average monthly precipitation levels in Sylhet, Bangladesh.
+
+        \item We use functions mutate\_temperature and mutate\_precipitation\_level, for randomly changing the baseline temperatures, depending on what month it is.
+
+        \item We want to generate a measure of larval abundance at a particular temperature and a precipitation level. For this, we use the function mosquito\_larvae\_abundance, which takes four parameters to mutate the larvae present in a system, on a particular date. The mutation is done taking in consideration the temperature change (from the past day), precipitation change, the current temperature, and the larvae currently present in the system. The mutation depends on another scientifically backed assumption, as explained in the next section.
+
+        \item Depending on the larval abundance, the adult parasitic mosquito abundance changes, we use another function adult\_mosquito\_abundance to mutate the adult\_mosquito\_population in the system.
+
+        \item Its also assumed that 1 - 10 percent of the adult mosquito population survive the inoculation period. About 80 percent of these turn out to be malarial cases. We have included an error rate of 20 percent, which determines the total number of cases that are generated on a particular day.
+
+        \item Finally, we plot these results in two visualizations. The first visualization shows us how the total cases in the system increase with time, while the second visualization shows how the rate of increase varies from day to day, depending on the month and what temperature it is at that point in time. All assumptions are explained in detail in the next section.
+
+        \item \item As a note to the reader, many trivial parts in the code have been omitted in this section.
+    \end{itemize}
+
+
+    \section*{Simulation Assumptions}
+    \begin{itemize}
+        \item Firstly, we have assumed that the system is in the time unit of days. We have done this to simplify the understanding of how a system may be subject to malarial case growth, given temperature changes and precipitation changes.
+
+        \item The temperatures change randomly, however, in the summer months, we have allowed for a higher temperature increase. [1]
+
+        \item With temperature, we allow for increase in precipitation levels as well, as the both are contributors to growth in the cases of malaria seen. [2]
+
+        \item It is also known, that temperature is a much more likely contributor to malaria, than the precipitation levels. [3] We have assumed here, that the amount of malarial case dependance on a unit rise in temperature, would be approximately three times that of a similar rise (considering the units carefully) in precipitation levels. This assumption is used in the implementation of the system.
+
+        \item We have assumed that a unit rise in temperature, will lead to a corresponding in the larval abundance depending on the present larval abundance at that temperature. The present larval abundace at a temperature is obtained from scientific studies. [4]
+
+        \item We assume that 2.1 to 4.7 percent [4] of the current larval population in the system, would turn into adult mosquitoes. Also about 1 - 10 percent [4] of this adult population, would survive the EIP (entomological inoculation period), to have the ability of transmitting malarial parasites to a human.
+
+        \item We have assumed that 80+- 20 percent of the bites turn out to be infectious, and ultimately lead to malaria in humans.
+
+        \\NOTES
+
+        [1] How is climate change affecting summer weather?, Yale Climate Connections
+        [2] Malaria and Climate Change, Dr Andrew Karanja Githeko, par. 1
+        [3] The Effect of Temperature on Anopheles Mosquito Population Dynamics and the Potential for Malaria Transmission, Lindsay M. Beck Johnson
+        [4] same as above, Results
+
+    \end{itemize}
+    \section*{Discussion}
+
+    \begin{itemize}
+        \item The first aim of our project is to visualize how temperature, precipitation levels, and humidity levels alter the level of vector-borne disease spread in Sylhet, Bangladesh.
+
+        \item After plotting the caseloads for different months, and different years, we see that for every subsequent year, the cases for a specific month generally increase. Our hypothesis at the start, is very clearly true.
+
+        \item We plot the caseloads for different age groups, and it is seen that there is not much significance (or difference) seen, except that the middle age population seems to be the most affected (due to the most number of cases seen), but we will not digress from our research motivations.
+
+        \item The climatic variables of temperature, precipitation levels, and humidity levels are studies next. Perhaps surprisingly, there is not much of an increasing association found for the humidity levels and precipitation levels. However, as backed by scientific study, it is found that a very small increase in climatic variables over a long time, causes a large increase in the number of vector-borne diseases seen. This is seen in the case of the temperatures changing.
+
+        \item While it may be subtle, there is temperature variability (in general, positive variability) seen through the data, and this gives us evidence to assert that climatic variables such as temperatures do seem to have a toll on the number of cases observed.
+
+        \item The next part of our analysis is a simulation of malarial caseloads varying across a system, as climatic variables of the temperature and the precipitation level vary. We have deliberately allowed a higher weight on the temperature dependance of malarial cases.
+
+        \item After running the simulation. The results are plotted. After carefully examining the results, we see that during the middle portion of our first plot, there is more variability in the cases seen. This is actually an interesting result, in that it is a hypothesis that temperatures of 20-26 cause more variability in the number of malarial cases. Given that the temperatures (in general) vary randomly consistently throughout the system, these temperatures must correspond to the "middle time-zones" of our graph, which is what is observed.
+
+        \item The second visualization is a bit different. We have used the difference in caseloads for consecutive days, and plotted how the differences vary. While the plot may seem random, there are a number of interesting observations that we see. Firstly, the number of cases in the starting of the simulation, are near 0, as in, there is a large amount of "lesser change" seen as the time varies.
+
+        \item Further, we notice that as the days progress (and consequently, the temperatures and precipitation levels increase in the simulated system), the difference in the number of cases starts to go away from 0 (as clearly seen in the visualization, there is much more scatter). This is interesting, as it shows how higher temperatures are causing higher changes in the caseloads for subsequent days.
+
+        \item There is one more interesting observation in this simulated visualization, just as we see that there are higher case-differences, after a certain point we see that there are a lot of 0 case-differences as well. This is in accordance to studies done in this field, that after a particular temperature (33 C, in this case), it is very difficult for larvae to survive, and there is not much of an increase in the number of cases seen.
+
+        \item While these visualizations give us a hint regarding what malarial growth looks like in the event of temperature changes as seen in the simulated system, there is a lot of room for improving the system. Firstly, many well known scientific relations have been omitted in the simulation (just for increasing understandability).
+
+        \item More concrete mutations can be accommodated. In other words, instead of random increases in the temperature of the system, a scientifically backed approach would increase the accuracy of the predictions. Also, instead of not relying on temperature for functions such as biting\_rate, adult\_mosquito\_abundance, climatic variables can be accounted for, as it is the case that the climate affects the inoculation period of a larva.
+
+        \item The suggestions above can probably be implemented in a future research project. The simulations can be made accurate, and be extended to more specific domains as well.
+
+
+    \end{itemize}
+    \section*{References}
+
+    \begin{itemize}
+        \item Malaria and climate change (2009), Dr Andrew Karanja Githeko, PhD
+        \item Characterizing the effect of temperature fluctuation on the incidence of malaria (2014), Malaria Journal
+        \item The Effect of Temperature on Anopheles Mosquito Population Dynamics and the Potential for Malaria Transmission, https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0079276
+        \item Sylhet, Bangladesh, weatherbase.com/weather/weather.php3?s=418910&cityname=Sylhet-Sylhet-Bangladesh
+        \item How is climate change affecting summer weather, Yale climate connections
+    \end{itemize}
+\end{document}
